@@ -15,13 +15,14 @@ class UsersController extends AppController {
 
         function login() {
             if (!empty($this->data)) {
-                $user = $this->User->findByUsername($this->data['User']['username']);
-                if (!empty($this->data['User']['password']) &&
-                    ($user['User']['password'] != 'NULL')) {
-                    if ($this->Auth->user()) {
-                        $this->Session->write('Auth.User.group',
-                        $this->User->Group->field('name',array('id' => $this->Auth->user('group_id'))));
-                    }
+                $user = $this->User->find('first', 
+                    array('conditions'=>array('User.username' => $this->data['User']['username'])
+                ));
+                if ($user['User']['password'] != 'NULL') {
+                        if ($this->data['User']['password'] == $user['User']['password']) {
+                            $this->Auth->login($this->data);
+                            $this->redirect($this->Auth->redirect());
+                        }
                 } elseif (($user['has_voted'] == 0) &&
                           ($user['password'] == 'NULL')) {
                     $this->Auth->login($this->data);
