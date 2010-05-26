@@ -15,26 +15,31 @@ class UsersController extends AppController {
 
         function login() {
             if (!empty($this->data)) {
-                if ($this->data['User']['has_voted'] == 0) {
+                $user = $this->User->findByUsername($this->data['User']['username']);
+                if (!empty($this->data['User']['password']) &&
+                    ($user['User']['password'] != 'NULL')) {
+                    if ($this->Auth->user()) {
+                        $this->Session->write('Auth.User.group',
+                        $this->User->Group->field('name',array('id' => $this->Auth->user('group_id'))));
+                    }
+                } elseif (($user['has_voted'] == 0) &&
+                          ($user['password'] == 'NULL')) {
                     $this->Auth->login($this->data);
                     $this->redirect($this->Auth->redirect());
+                } else {
+                    $this->Session->setFlash('Vous avez déjà voté.');
                 }
             }
         }
 
+        function logout() {
+            $this->redirect($this->Auth->logout());
+        }
+
         function admin_login() {
-            // From
-            // http://bakery.cakephp.org/articles/view/minimalistic-group-based-access-control-in-5-mins
-            if ($this->Auth->user()) {
-                $this->Session->write('Auth.User.group',
-                    $this->User->Group->field('name',array('id' => $this->Auth->user('group_id'))));
-                $this->redirect($this->Auth->redirect());
-            }
         }
 
         function admin_logout() {
-            // From
-            // http://bakery.cakephp.org/articles/view/minimalistic-group-based-access-control-in-5-mins
             $this->redirect($this->Auth->logout());
         }
 
