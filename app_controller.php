@@ -35,5 +35,20 @@
  * @subpackage    cake.app
  */
 class AppController extends Controller {
+        var $components = array('Auth', 'RequestHandler');
+
+        function beforeFilter() {
+                $this->Auth->authorize = 'controller';
+                $this->Auth->autoRedirect = false;
+                $this->Auth->loginAction = array('action'=>'login', 'controller'=>'users', 'admin'=>false);
+                $this->Auth->loginRedirect = array('action'=>'index', 'controller'=>'pages', 'admin'=>false);
+                $this->Auth->logoutRedirect = array('action'=>'login', 'controller'=>'users', 'admin'=>false);
+        }
+
+        function isAuthorized() {
+            if ($this->Auth->user('group') == 'Admin') return true;
+            if ($this->permission[$this->action] == '*') return true;
+            return false;
+        }
 }
 ?>

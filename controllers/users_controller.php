@@ -3,6 +3,40 @@ class UsersController extends AppController {
 
 	var $name = 'Users';
 	var $helpers = array('Html', 'Form');
+        var $permissions = array(
+            'login' => '*'
+        );
+
+        function beforeFilter() {
+            $this->Auth->allow('login');
+            $this->Auth->allow('admin_login');
+            parent::beforeFilter();
+        }
+
+        function login() {
+            if (!empty($this->data)) {
+                if ($this->data['User']['has_voted'] == 0) {
+                    $this->Auth->login($this->data);
+                    $this->redirect($this->Auth->redirect());
+                }
+            }
+        }
+
+        function admin_login() {
+            // From
+            // http://bakery.cakephp.org/articles/view/minimalistic-group-based-access-control-in-5-mins
+            if ($this->Auth->user()) {
+                $this->Session->write('Auth.User.group',
+                    $this->User->Group->field('name',array('id' => $this->Auth->user('group_id'))));
+                $this->redirect($this->Auth->redirect());
+            }
+        }
+
+        function admin_logout() {
+            // From
+            // http://bakery.cakephp.org/articles/view/minimalistic-group-based-access-control-in-5-mins
+            $this->redirect($this->Auth->logout());
+        }
 
 	function admin_index() {
 		$this->User->recursive = 0;
