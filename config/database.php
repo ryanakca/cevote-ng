@@ -6,7 +6,7 @@ class DATABASE_CONFIG {
 		'persistent' => false,
 		'host' => 'localhost',
 		'login' => 'cevote-ng',
-		'password' => 'aoeunatoehunsotehui',
+		'password' => 'dbpw',
 		'database' => 'cevoteng',
 	);
 }
