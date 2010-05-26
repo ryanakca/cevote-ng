@@ -83,6 +83,11 @@ class PagesController extends AppController {
                 }
         }
 
+        function results() {
+            $positions = $this->Position->find('all');
+            $this->set(compact('positions'));
+        }
+
 	function display() {
 		$path = func_get_args();
 
