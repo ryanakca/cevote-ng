@@ -34,6 +34,7 @@
 		<th><?php __('Name'); ?></th>
 		<th><?php __('Position Id'); ?></th>
 		<th><?php __('Image Url'); ?></th>
+		<th><?php __('Votes'); ?></th>
 		<th class="actions"><?php __('Actions');?></th>
 	</tr>
 	<?php
@@ -49,6 +50,7 @@
 			<td><?php echo $candidate['name'];?></td>
 			<td><?php echo $candidate['position_id'];?></td>
 			<td><?php echo $candidate['image_url'];?></td>
+			<td><?php echo $candidate['votes'];?></td>
 			<td class="actions">
 				<?php echo $html->link(__('View', true), array('controller' => 'candidates', 'action' => 'view', $candidate['id'])); ?>
 				<?php echo $html->link(__('Edit', true), array('controller' => 'candidates', 'action' => 'edit', $candidate['id'])); ?>

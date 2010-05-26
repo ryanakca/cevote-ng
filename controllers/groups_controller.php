@@ -27,6 +27,8 @@ class GroupsController extends AppController {
 				$this->Session->setFlash(__('The Group could not be saved. Please, try again.', true));
 			}
 		}
+		$positions = $this->Group->Position->find('list');
+		$this->set(compact('positions'));
 	}
 
 	function admin_edit($id = null) {
@@ -45,6 +47,8 @@ class GroupsController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Group->read(null, $id);
 		}
+		$positions = $this->Group->Position->find('list');
+		$this->set(compact('positions'));
 	}
 
 	function admin_delete($id = null) {

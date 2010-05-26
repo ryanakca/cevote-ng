@@ -34,6 +34,7 @@
 		<th><?php __('Username'); ?></th>
 		<th><?php __('Has Voted'); ?></th>
 		<th><?php __('Group Id'); ?></th>
+		<th><?php __('Password'); ?></th>
 		<th class="actions"><?php __('Actions');?></th>
 	</tr>
 	<?php
@@ -49,6 +50,7 @@
 			<td><?php echo $user['username'];?></td>
 			<td><?php echo $user['has_voted'];?></td>
 			<td><?php echo $user['group_id'];?></td>
+			<td><?php echo $user['password'];?></td>
 			<td class="actions">
 				<?php echo $html->link(__('View', true), array('controller' => 'users', 'action' => 'view', $user['id'])); ?>
 				<?php echo $html->link(__('Edit', true), array('controller' => 'users', 'action' => 'edit', $user['id'])); ?>
