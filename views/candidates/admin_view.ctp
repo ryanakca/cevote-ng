@@ -21,6 +21,11 @@
 			<?php echo $candidate['Candidate']['image_url']; ?>
 			&nbsp;
 		</dd>
+		<dt<?php if ($i % 2 == 0) echo $class;?>><?php __('Votes'); ?></dt>
+		<dd<?php if ($i++ % 2 == 0) echo $class;?>>
+			<?php echo $candidate['Candidate']['votes']; ?>
+			&nbsp;
+		</dd>
 	</dl>
 </div>
 <div class="actions">

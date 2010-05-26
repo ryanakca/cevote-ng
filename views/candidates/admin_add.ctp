@@ -6,6 +6,7 @@
 		echo $form->input('name');
 		echo $form->input('position_id');
 		echo $form->input('image_url');
+		echo $form->input('votes');
 	?>
 	</fieldset>
 <?php echo $form->end('Submit');?>

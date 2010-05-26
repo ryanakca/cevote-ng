@@ -12,6 +12,7 @@ echo $paginator->counter(array(
 	<th><?php echo $paginator->sort('name');?></th>
 	<th><?php echo $paginator->sort('position_id');?></th>
 	<th><?php echo $paginator->sort('image_url');?></th>
+	<th><?php echo $paginator->sort('votes');?></th>
 	<th class="actions"><?php __('Actions');?></th>
 </tr>
 <?php
@@ -34,6 +35,9 @@ foreach ($candidates as $candidate):
 		</td>
 		<td>
 			<?php echo $candidate['Candidate']['image_url']; ?>
+		</td>
+		<td>
+			<?php echo $candidate['Candidate']['votes']; ?>
 		</td>
 		<td class="actions">
 			<?php echo $html->link(__('View', true), array('action' => 'view', $candidate['Candidate']['id'])); ?>
