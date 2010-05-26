@@ -43,6 +43,7 @@ class AppController extends Controller {
                 $this->Auth->loginAction = array('action'=>'login', 'controller'=>'users', 'admin'=>false);
                 $this->Auth->loginRedirect = array('action'=>'index', 'controller'=>'pages', 'admin'=>false);
                 $this->Auth->logoutRedirect = array('action'=>'login', 'controller'=>'users', 'admin'=>false);
+                $this->Auth->userScope = array('User.has_voted' => 0);
         }
 
         function isAuthorized() {
