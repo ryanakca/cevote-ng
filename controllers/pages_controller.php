@@ -53,13 +53,36 @@ class PagesController extends AppController {
  * @var array
  * @access public
  */
-	var $uses = array();
+	var $uses = array('Candidate', 'Position', 'User', 'Group');
 /**
  * Displays a view
  *
  * @param mixed What page to display
  * @access public
  */
+        var $permissions = array(
+            'vote'=>'*'
+        );
+        
+        function vote() {
+                $user = $this->User->read(null, $this->Auth->user('id'));
+                $group = $this->Group->read(null, $user['Group']['id']);
+                if ($this->data) {
+                    if ($user['User']['has_voted'] == 0) {
+                        foreach ($this->data['Position']['Candidate'] as $candidate) {
+                            $candidate['Candidate']['votes'] += 1;
+                        }
+                        $this->saveAll($user['User']);
+                    }
+                } else {
+                    $positions = $this->Position->find('all', array(
+                        'fields'=> array('Position.*'),
+                        'conditions'=>array('GroupPositions.group_id'=>$user['Group']['id'])
+                    ));
+                    $this->set(compact('positions'));
+                }
+        }
+
 	function display() {
 		$path = func_get_args();
 
