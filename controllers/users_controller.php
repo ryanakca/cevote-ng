@@ -18,11 +18,18 @@ class UsersController extends AppController {
                 $user = $this->User->find('first', 
                     array('conditions'=>array('User.username' => $this->data['User']['username'])
                 ));
+                // Admin users have a password, voters don't.
                 if ($user['User']['password'] != 'NULL') {
                         if ($this->data['User']['password'] == $user['User']['password']) {
                             $this->Auth->login($this->data);
-                            $this->redirect($this->Auth->redirect());
+                            if ($this->Auth->user()) {
+                                // User is logged in
+                                $this->Session->write('Auth.User.group',
+                                    $this->User->Group->field('name', array('id' => $user['User']['group_id'])));
+                                $this->redirect($this->Auth->redirect());
+                            }
                         }
+                // Only allow voters woh haven't yet voted.
                 } elseif (($user['has_voted'] == 0) &&
                           ($user['password'] == 'NULL')) {
                     $this->Auth->login($this->data);
