@@ -65,21 +65,23 @@ class PagesController extends AppController {
         );
         
         function vote() {
+                $this->User->recursive = 3;
                 $user = $this->User->read(null, $this->Auth->user('id'));
-                $group = $this->Group->read(null, $user['Group']['id']);
                 if ($this->data) {
                     if ($user['User']['has_voted'] == 0) {
-                        foreach ($this->data['Position']['Candidate'] as $candidate) {
-                            $candidate['Candidate']['votes'] += 1;
+                        foreach ($this->data['Group']['Position'] as $position) {
+                            foreach ($position['Candidate'] as $candidate) {
+                                $candidate['Candidate']['votes'] += 1;
+                                $this->save($candidate);
+                            }
                         }
-                        $this->saveAll($user['User']);
+                    } else {
+                        $this->Session->setFlash('Vous avez déjà voté.');
+                        $this->redirect($this->Auth->logout());
+                    
                     }
                 } else {
-                    $positions = $this->Position->find('all', array(
-                        'fields'=> array('Position.*'),
-                        'conditions'=>array('GroupPositions.group_id'=>$user['Group']['id'])
-                    ));
-                    $this->set(compact('positions'));
+                    $this->set(compact('user'));
                 }
         }
 
