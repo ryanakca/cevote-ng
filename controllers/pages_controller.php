@@ -61,6 +61,7 @@ class PagesController extends AppController {
  * @access public
  */
         var $permissions = array(
+            'results'=>array('Admin'),
             'vote'=>'*'
         );
         
