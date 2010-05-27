@@ -69,12 +69,17 @@ class PagesController extends AppController {
                 $user = $this->User->read(null, $this->Auth->user('id'));
                 if ($this->data) {
                     if ($user['User']['has_voted'] == 0) {
-                        foreach ($this->data['Group']['Position'] as $position) {
-                            foreach ($position['Candidate'] as $candidate) {
-                                $candidate['Candidate']['votes'] += 1;
-                                $this->save($candidate);
+                        // Modify positions in place
+                        foreach ($this->data['Group']['Position'] as $position => $pvalue) {
+                            $pvalue = & $this->data['Group']['Position'][$position];
+                            foreach ($pvalue['Candidate'] as $candidate => $cvalue) {
+                                $cvalue = & $pvalue['Candidate'][$candidate];
+                                $cvalue['votes'] += 1;
+                                unset($cvalue);
                             }
+                            unset($pvalue);
                         }
+                        $this->User->save($this->data);
                     } else {
                         $this->Session->setFlash('Vous avez déjà voté.');
                         $this->redirect($this->Auth->logout());
