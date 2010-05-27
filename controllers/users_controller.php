@@ -15,11 +15,16 @@ class UsersController extends AppController {
 
         function login() {
             if (!empty($this->data)) {
+                // We cannot pass an array([User]=>array(...), 
+                // [Group]=>array(...)) to $this->Auth->login($user). It only 
+                // accepts an array([User]=>array(...)). Hence the recursive = 
+                // -1.
+                $this->User->recursive = -1;
                 $user = $this->User->find('first', 
                     array('conditions'=>array('User.username' => $this->data['User']['username'])
                 ));
                 // Admin users have a password, voters don't.
-                if ($user['User']['password'] != 'NULL') {
+                if (!is_null($user['User']['password'])) {
                         if ($this->data['User']['password'] == $user['User']['password']) {
                             $this->Auth->login($this->data);
                             if ($this->Auth->user()) {
@@ -29,10 +34,10 @@ class UsersController extends AppController {
                                 $this->redirect($this->Auth->redirect());
                             }
                         }
-                // Only allow voters woh haven't yet voted.
-                } elseif (($user['has_voted'] == 0) &&
-                          ($user['password'] == 'NULL')) {
-                    $this->Auth->login($this->data);
+                // Only allow voters who haven't yet voted and who have a NULL 
+                // password
+                } elseif ($user['User']['has_voted'] == 0) {
+                    $this->Auth->login($user);
                     $this->redirect($this->Auth->redirect());
                 } else {
                     $this->Session->setFlash('Vous avez déjà voté.');
