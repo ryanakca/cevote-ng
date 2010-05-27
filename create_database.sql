@@ -61,7 +61,7 @@ CREATE TABLE `groups` (
 
 LOCK TABLES `groups` WRITE;
 /*!40000 ALTER TABLE `groups` DISABLE KEYS */;
-INSERT INTO `groups` VALUES (1,'Admin');
+INSERT INTO `groups` VALUES (1,'Admin'),(2,'7'),(3,'8'),(4,'9'),(5,'10'),(6,'11'),(7,'12');
 /*!40000 ALTER TABLE `groups` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -109,6 +109,19 @@ CREATE TABLE `positions` (
 
 LOCK TABLES `positions` WRITE;
 /*!40000 ALTER TABLE `positions` DISABLE KEYS */;
+INSERT INTO `positions` VALUES (1, 'Premier Ministre'),
+(2, 'Vice-premier ministre'),
+(3, 'Ministre des finances'),
+(4, 'Ministre des communications'),
+(5, 'Ministre des sports'),
+(6, 'Ministre de la pastorale'),
+(7, "Ministre de l'environnement"),
+(8, 'Ministre de la culture'),
+(9, 'Député de la 8e année'),
+(10, 'Député de la 9e année'),
+(11, 'Député de la 10e année'),
+(12, 'Député de la 11e année'),
+(13, 'Député de la 12e année');
 /*!40000 ALTER TABLE `positions` ENABLE KEYS */;
 UNLOCK TABLES;
 
