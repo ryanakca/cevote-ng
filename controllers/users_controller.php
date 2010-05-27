@@ -26,10 +26,9 @@ class UsersController extends AppController {
                     array('conditions'=>array('User.username' => $this->data['User']['username'])
                 ));
                 // Admin users have a password, voters don't.
-                if (is_null($user['User']['password']) && ($user['User']['has_voted'] == 0)) {
-                    $this->data['User']['password'] = Null;
-                    debug($this->Auth->login($this->data));
-                    debug($this->Auth->user());
+                if ($user['User']['has_voted'] == 0) {
+                    $this->data['User']['password'] = $this->Auth->password('password');
+                    $this->Auth->login($this->data);
                     if ($this->Auth->user()) {
                         $this->redirect($this->Auth->loginRedirect);
                     } 
