@@ -1,10 +1,10 @@
 <div class="positions index">
 <h2>Résultats</h2>
+<table cellpadding="0" cellspacing="0">
 <?php
 foreach ($positions as $position):?>
-<table cellpadding="0" cellspacing="0">
     <tr>
-            <th>Candidats pour <?php echo $positoin['Position']['name']; ?></th>
+            <th>Candidats pour <?php echo $position['Position']['name']; ?></th>
             <th>Nombre de votes</th>
     </tr>
 <?php
@@ -16,9 +16,9 @@ foreach ($positions as $position):?>
         }
 ?>
         <tr<?php echo $class; ?>>
-            <td><?php echo $candidate['Candidate']['name']; ?></td>
-            <td><?php echo $candidate['Candidate']['votes']; ?></td>
+            <td><?php echo $candidate['name']; ?></td>
+            <td><?php echo $candidate['votes']; ?></td>
         </tr>
     <?php endforeach;?>
-</table>
 <?php endforeach; ?>
+</table>
