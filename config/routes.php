@@ -37,4 +37,5 @@
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
         Router::connect('/vote/', array('controller'=> 'pages', 'action' => 'vote'));
+        Router::connect('/results/', array('controller'=>'pages', 'action'=>'results'));
 ?>
