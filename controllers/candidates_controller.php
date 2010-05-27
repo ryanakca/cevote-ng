@@ -27,6 +27,8 @@ class CandidatesController extends AppController {
 				$this->Session->setFlash(__('The Candidate could not be saved. Please, try again.', true));
 			}
 		}
+		$positions = $this->Candidate->Position->find('list');
+		$this->set(compact('positions'));
 	}
 
 	function admin_edit($id = null) {
@@ -45,6 +47,8 @@ class CandidatesController extends AppController {
 		if (empty($this->data)) {
 			$this->data = $this->Candidate->read(null, $id);
 		}
+		$positions = $this->Candidate->Position->find('list');
+		$this->set(compact('positions'));
 	}
 
 	function admin_delete($id = null) {
