@@ -10,6 +10,8 @@ class UsersController extends AppController {
         function beforeFilter() {
             $this->Auth->allow('login');
             $this->Auth->allow('admin_login');
+            $this->Auth->allow('logout');
+            $this->Auth->allow('admin_logout');
             parent::beforeFilter();
         }
 
@@ -24,21 +26,13 @@ class UsersController extends AppController {
                     array('conditions'=>array('User.username' => $this->data['User']['username'])
                 ));
                 // Admin users have a password, voters don't.
-                if (!is_null($user['User']['password'])) {
-                        if ($this->data['User']['password'] == $user['User']['password']) {
-                            $this->Auth->login($this->data);
-                            if ($this->Auth->user()) {
-                                // User is logged in
-                                $this->Session->write('Auth.User.group',
-                                    $this->User->Group->field('name', array('id' => $user['User']['group_id'])));
-                                $this->redirect($this->Auth->redirect());
-                            }
-                        }
-                // Only allow voters who haven't yet voted and who have a NULL 
-                // password
-                } elseif ($user['User']['has_voted'] == 0) {
-                    $this->Auth->login($user);
-                    $this->redirect($this->Auth->redirect());
+                if (is_null($user['User']['password']) && ($user['User']['has_voted'] == 0)) {
+                    $this->data['User']['password'] = Null;
+                    debug($this->Auth->login($this->data));
+                    debug($this->Auth->user());
+                    if ($this->Auth->user()) {
+                        $this->redirect($this->Auth->loginRedirect);
+                    } 
                 } else {
                     $this->Session->setFlash('Vous avez déjà voté.');
                 }
@@ -50,6 +44,29 @@ class UsersController extends AppController {
         }
 
         function admin_login() {
+            if (!empty($this->data)) {
+                // We cannot pass an array([User]=>array(...),
+                // [Group]=>array(...)) to $this->Auth->login($user). It only
+                // accepts an array([User]=>array(...)). Hence the recursive =
+                // -1.
+                $this->User->recursive = -1;
+                $user = $this->User->find('first',
+                    array('conditions'=>array('User.username' => $this->data['User']['username'])
+                ));
+                debug($user);
+                // Admin users have a password, voters don't.
+                if (!is_null($user['User']['password'])) {
+                        if ($this->data['User']['password'] == $user['User']['password']) {
+                            $this->Auth->login($this->data);
+                            if ($this->Auth->user()) {
+                                // User is logged in
+                                $this->Session->write('Auth.User.group',
+                                    $this->User->Group->field('name', array('id' => $user['User']['group_id'])));
+                                $this->redirect($this->Auth->loginRedirect());
+                            }
+                        }
+                } 
+            }
         }
 
         function admin_logout() {
