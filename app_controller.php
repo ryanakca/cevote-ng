@@ -41,15 +41,18 @@ class AppController extends Controller {
                 $this->Auth->authorize = 'controller';
                 $this->Auth->autoRedirect = false;
                 $this->Auth->loginAction = array('action'=>'login', 'controller'=>'users', 'admin'=>false);
-                $this->Auth->loginRedirect = array('action'=>'index', 'controller'=>'users', 'admin'=>true);
+                $this->Auth->loginRedirect = array('action'=>'vote', 'controller'=>'pages', 'admin'=>false);
                 $this->Auth->logoutRedirect = array('action'=>'login', 'controller'=>'users', 'admin'=>false);
-                $this->Auth->userScope = array('User.has_voted' => 0);
         }
 
         function isAuthorized() {
-            if ($this->Auth->user('group') == 'Admin') return true;
-            if ($this->permission[$this->action] == '*') return true;
-            return true;
+                if ($this->Auth->user('group') == 'Admin') {
+                    return true;
+                } elseif ($this->permissions[$this->action] == '*') {
+                    return true;
+                } else {
+                    return true;
+                }
         }
 }
 ?>
