@@ -22,50 +22,40 @@ class PositionsController extends AppController {
                             ))))));
                 $positions = $user['Group']['Position'];
                 if ($this->data) {
-                    debug($this->data);
-                    $vote_ids = array();
-                    $votes_per_pos = 0;
-                    foreach ($this->data as $position):
-                        $vote_id = Null;
-                        foreach ($position as $candidate):
-                            if (!is_null($candidate['id'])) {
-                                $votes_per_pos += 1;
-                                $vote_ids[] = $candidate['id'];
+                    if ($user['User']['has_voted'] == 0) {
+                        $vote_ids = array();
+                        $votes_per_pos = 0;
+                        foreach ($this->data as $position):
+                            foreach ($position as $candidate):
+                                if (strlen($candidate['id']) != 0) {
+                                    $votes_per_pos += 1;
+                                    $vote_ids[] = $candidate['id'];
+                                }
+                            endforeach;
+                            if ($votes_per_pos > 1) {
+                                $this->Session->setFlash('Choisssez UN SEUL CANDIDAT par poste!');
+                                $this->set(compact('positions'));
+                                break;
+                            } else {
+                                $votes_per_pos = 0;
                             }
                         endforeach;
-                        if ($votes_per_pos > 1) {
-                            $this->Session->setFlash('Choisssez UN SEUL CANDIDAT par poste!');
-                            $this->set(compact('positions'));
-                            break;
-                        } else {
-                            $votes_per_pos = 0;
+                        if (($votes_per_pos <= 1) && !empty($vote_ids)) {
+                            foreach ($vote_ids as $vote_id):
+                                $candidate = $this->Candidate->read(null, $vote_id);
+                                $candidate['votes'] += 1;
+                                $this->Candidate->save($candidate);
+                            endforeach;
+                            $user['User']['has_voted'] = 1;
+                            $this->User->save($user);
+                            $this->Session->setFlash('Vos votes ont étés soumis.');
+                            $this->redirect($this->Auth->logout());
                         }
-                    endforeach;
-                    debug($vote_ids);
-                    if (($votes_per_pos <= 1) && !empty($vote_id)) {
-                        foreach ($vote_ids as $vote_id):
-                            $candidate = $this->Candidate->read(null, $vote_id);
-                            $candidate['votes'] += 1;
-                            $this->Candidate->save($candidate);
-                        endforeach;
-                    }
-                  /*  if ($user['User']['has_voted'] == 0) {
-                        // Modify positions in place
-                        foreach ($this->data['Group']['Position'] as $position => $pvalue) {
-                            $pvalue = & $this->data['Group']['Position'][$position];
-                            foreach ($pvalue['Candidate'] as $candidate => $cvalue) {
-                                $cvalue = & $pvalue['Candidate'][$candidate];
-                                $cvalue['votes'] += 1;
-                                unset($cvalue);
-                            }
-                            unset($pvalue);
-                        }
-                        $this->User->save($this->data);
                     } else {
                         $this->Session->setFlash('Vous avez déjà voté.');
                         $this->redirect($this->Auth->logout());
 
-                    }*/
+                    }
                 } else {
                     $this->set(compact('positions'));
                 }
