@@ -41,13 +41,17 @@ class PositionsController extends AppController {
                                 $votes_per_pos = 0;
                             }
                         endforeach;
-                        // Ma;ke sure we haven't exited with too many votes
-                        if (($votes_per_pos <= 1) && !empty($vote_ids)) {
-                            foreach ($vote_ids as $vote_id):
-                                $candidate = $this->Candidate->read(null, $vote_id);
-                                $candidate['Candidate']['votes'] += 1;
-                                $this->Candidate->save($candidate);
-                            endforeach;
+                        // Ma;ke sure we haven't broken with too many votes
+                        if ($votes_per_pos <= 1) {
+                            // User has voted:
+                            if (!empty($vote_ids)) {
+                                foreach ($vote_ids as $vote_id):
+                                    $candidate = $this->Candidate->read(null, $vote_id);
+                                    $candidate['Candidate']['votes'] += 1;
+                                    $this->Candidate->save($candidate);
+                                endforeach;
+                            }
+                            // Log him out regardless of if he chose to vote.
                             $user['User']['has_voted'] = 1;
                             $this->User->save($user);
                             $this->Session->setFlash('Vos votes ont étés soumis.');
