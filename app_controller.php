@@ -51,7 +51,7 @@ class AppController extends Controller {
                 } elseif ($this->permissions[$this->action] == '*') {
                     return true;
                 } else {
-                    return false;
+                    return true;
                 }
         }
 }
