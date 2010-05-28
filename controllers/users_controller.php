@@ -4,7 +4,8 @@ class UsersController extends AppController {
 	var $name = 'Users';
 	var $helpers = array('Html', 'Form');
         var $permissions = array(
-            'login' => '*'
+            'login' => '*',
+            'logout' => '*'
         );
 
         function beforeFilter() {
