@@ -41,7 +41,7 @@ class AppController extends Controller {
                 $this->Auth->authorize = 'controller';
                 $this->Auth->autoRedirect = false;
                 $this->Auth->loginAction = array('action'=>'login', 'controller'=>'users', 'admin'=>false);
-                $this->Auth->loginRedirect = array('action'=>'vote', 'controller'=>'pages', 'admin'=>false);
+                $this->Auth->loginRedirect = array('action'=>'vote', 'controller'=>'positions', 'admin'=>false);
                 $this->Auth->logoutRedirect = array('action'=>'login', 'controller'=>'users', 'admin'=>false);
         }
 
