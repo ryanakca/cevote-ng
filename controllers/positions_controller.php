@@ -127,5 +127,16 @@ class PositionsController extends AppController {
 		$this->redirect(array('action' => 'index'));
 	}
 
+        function admin_results() {
+                $positions = $this->Position->find('all');
+                $voted_users = $this->User->find('list', array('conditions'=>array('User.has_voted'=>1)));
+                $total_votes = 0;
+                if (!empty($voted_users)) {
+                    $total_votes = count($voted_users);
+                }
+                $this->set(compact('positions'));
+                $this->set('total_votes', $total_votes);
+
+        }
 }
 ?>

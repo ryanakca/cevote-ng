@@ -22,3 +22,4 @@ foreach ($positions as $position):?>
     <?php endforeach;?>
 <?php endforeach; ?>
 </table>
+    <p>Nombre total des votes: <?php echo $total_votes; ?></p>

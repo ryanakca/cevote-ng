@@ -61,18 +61,12 @@ class PagesController extends AppController {
  * @access public
  */
         var $permissions = array(
-            'results'=>array('Admin'),
             'display'=>'*'
         );
         
         function beforeFilter() {
             $this->Auth->Allow('display');
             parent::beforeFilter();
-        }
-
-        function results() {
-            $positions = $this->Position->find('all');
-            $this->set(compact('positions'));
         }
 
 	function display() {
