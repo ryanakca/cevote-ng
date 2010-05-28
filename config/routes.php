@@ -36,6 +36,6 @@
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
-        Router::connect('/vote/', array('controller'=> 'pages', 'action' => 'vote'));
+        Router::connect('/vote/', array('controller'=> 'positions', 'action' => 'vote'));
         Router::connect('/results/', array('controller'=>'pages', 'action'=>'results'));
 ?>

@@ -61,36 +61,9 @@ class PagesController extends AppController {
  * @access public
  */
         var $permissions = array(
-            'results'=>array('Admin'),
-            'vote'=>'*'
+            'results'=>array('Admin')
         );
         
-        function vote() {
-                $this->User->recursive = 3;
-                $user = $this->User->read(null, $this->Auth->user('id'));
-                if ($this->data) {
-                    if ($user['User']['has_voted'] == 0) {
-                        // Modify positions in place
-                        foreach ($this->data['Group']['Position'] as $position => $pvalue) {
-                            $pvalue = & $this->data['Group']['Position'][$position];
-                            foreach ($pvalue['Candidate'] as $candidate => $cvalue) {
-                                $cvalue = & $pvalue['Candidate'][$candidate];
-                                $cvalue['votes'] += 1;
-                                unset($cvalue);
-                            }
-                            unset($pvalue);
-                        }
-                        $this->User->save($this->data);
-                    } else {
-                        $this->Session->setFlash('Vous avez déjà voté.');
-                        $this->redirect($this->Auth->logout());
-                    
-                    }
-                } else {
-                    $this->set(compact('user'));
-                }
-        }
-
         function results() {
             $positions = $this->Position->find('all');
             $this->set(compact('positions'));

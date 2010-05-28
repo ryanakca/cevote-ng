@@ -3,6 +3,73 @@ class PositionsController extends AppController {
 
 	var $name = 'Positions';
 	var $helpers = array('Html', 'Form');
+        var $uses = array('Position', 'User', 'Candidate');
+        var $permissions = array(
+            'vote'=>'*'
+            );
+
+        function vote() {
+                $this->User->recursive = 3;
+                $user = $this->User->read(null, $this->Auth->user('id'));
+                $this->User->Behaviors->attach('Containable');
+                $positions = $this->User->find('first', array(
+                    'conditions' => array('User.id'=>$this->Auth->user('id')),
+                    'contain'=>array(
+                        'Group' => array(
+                            'Position' => array(
+                                'Candidate'=> array(
+                                    'fields'=>array('name')
+                            ))))));
+                $positions = $user['Group']['Position'];
+                if ($this->data) {
+                    debug($this->data);
+                    $vote_ids = array();
+                    $votes_per_pos = 0;
+                    foreach ($this->data as $position):
+                        $vote_id = Null;
+                        foreach ($position as $candidate):
+                            if (!is_null($candidate['id'])) {
+                                $votes_per_pos += 1;
+                                $vote_ids[] = $candidate['id'];
+                            }
+                        endforeach;
+                        if ($votes_per_pos > 1) {
+                            $this->Session->setFlash('Choisssez UN SEUL CANDIDAT par poste!');
+                            $this->set(compact('positions'));
+                            break;
+                        } else {
+                            $votes_per_pos = 0;
+                        }
+                    endforeach;
+                    debug($vote_ids);
+                    if (($votes_per_pos <= 1) && !empty($vote_id)) {
+                        foreach ($vote_ids as $vote_id):
+                            $candidate = $this->Candidate->read(null, $vote_id);
+                            $candidate['votes'] += 1;
+                            $this->Candidate->save($candidate);
+                        endforeach;
+                    }
+                  /*  if ($user['User']['has_voted'] == 0) {
+                        // Modify positions in place
+                        foreach ($this->data['Group']['Position'] as $position => $pvalue) {
+                            $pvalue = & $this->data['Group']['Position'][$position];
+                            foreach ($pvalue['Candidate'] as $candidate => $cvalue) {
+                                $cvalue = & $pvalue['Candidate'][$candidate];
+                                $cvalue['votes'] += 1;
+                                unset($cvalue);
+                            }
+                            unset($pvalue);
+                        }
+                        $this->User->save($this->data);
+                    } else {
+                        $this->Session->setFlash('Vous avez déjà voté.');
+                        $this->redirect($this->Auth->logout());
+
+                    }*/
+                } else {
+                    $this->set(compact('positions'));
+                }
+        }
 
 	function admin_index() {
 		$this->Position->recursive = 0;
