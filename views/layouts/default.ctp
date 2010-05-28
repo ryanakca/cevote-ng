@@ -33,7 +33,7 @@
 </head>
 <body>
 <div id="header">
-<h1 id="institution">CEVote-NG &mdash; élections du gouvernement des éleves</h1>
+<h1 id="institution">Élections du gouvernement des éleves</h1>
 <!-- Insert your header here -->
 </div>
 <div id="content">
