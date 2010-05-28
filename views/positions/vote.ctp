@@ -14,7 +14,7 @@
                         </tr>
                     <?php foreach ($position['Candidate'] as $cid => $candidate): ?>
                     <tr>
-                        <td><?php echo $form->radio($pid.'.Candidate'.$cid.'.id', array($candidate['id']=>$candidate['name']), array('label'=>$position['name']));?></td>
+                        <td><?php echo $form->checkbox($pid.'.Candidate'.$cid.'.id', array('value'=>$candidate['id'])); echo $candidate['name']; ?> </td>
                         <td><img src="<?php echo $candidate['image_url']; ?>"></td>
                     </tr>
             <?php endforeach; ?>
