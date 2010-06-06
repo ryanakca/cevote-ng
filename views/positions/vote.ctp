@@ -2,7 +2,7 @@
 <?php echo $form->create('Position', array('action'=>'vote'));?>
 	<fieldset>
                 <h2>Sélectionnez UN SEUL candidat par poste.</h2>
- 		<legend>Voter</legend>
+ 		<legend>Votez</legend>
                 <table>
         <?php foreach ($positions as $pid => $position): ?>
                         <tr>
@@ -21,5 +21,5 @@
             <?php endforeach; ?>
             </table>
 	</fieldset>
-        <?php echo $form->end("Je confirme que j'ai révisé mes choix et que je désir soumettre mon vote"); ?>
+        <?php echo $form->end("Je confirme que j'ai révisé mes choix et que je désire soumettre mon vote"); ?>
 </div>

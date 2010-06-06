@@ -28,4 +28,12 @@
     AEC also contains code which is
     Copyright &copy; 2005&ndash;2009 <a href="http://www.cakefoundation.org">Cake Software Foundation, Inc.</a> and
     Copyright &copy; 2009 Ryan Kavanagh.</pre>
-</div>
+
+<strong style="font-size: 120%"><p>Un ÉNORME merci aux personnes suivantes pour leur aide:</p>
+<ul>
+<li>Camille Prior</li>
+<li>Jeremy Jobin</li>
+<li>Jazmine Morley</li>
+<li>Zachary Ouellette</li>
+<li>Joseph Akl</li>
+</ul></div>

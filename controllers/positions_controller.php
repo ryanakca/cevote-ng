@@ -5,6 +5,7 @@ class PositionsController extends AppController {
 	var $helpers = array('Html', 'Form');
         var $uses = array('Position', 'User', 'Candidate');
         var $permissions = array(
+            'admin_results'=>array('Admin'),
             'vote'=>'*'
             );
 
@@ -54,7 +55,7 @@ class PositionsController extends AppController {
                             // Log him out regardless of if he chose to vote.
                             $user['User']['has_voted'] = 1;
                             $this->User->save($user);
-                            $this->Session->setFlash('Vos votes ont étés soumis.');
+                            $this->Session->setFlash('Vos votes ont été soumis.');
                             $this->redirect($this->Auth->logout());
                         }
                     } else {
