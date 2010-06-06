@@ -12,18 +12,8 @@ class PositionsController extends AppController {
         function vote() {
                 $this->User->recursive = 3;
                 $user = $this->User->read(null, $this->Auth->user('id'));
-                $this->User->Behaviors->attach('Containable');
-                $positions = $this->User->find('first', array(
-                    'conditions' => array('User.id'=>$this->Auth->user('id')),
-                    'contain'=>array(
-                        'Group' => array(
-                            'Position' => array(
-                                'Candidate'=> array(
-                                    'fields'=>array('name')
-                            ))))));
                 $positions = $user['Group']['Position'];
                 if ($this->data) {
-                    //debug($this->data);
                     if ($user['User']['has_voted'] == 0) {
                         $vote_ids = array();
                         $votes_per_pos = 0;
